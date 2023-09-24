@@ -5,6 +5,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
@@ -30,15 +33,13 @@ public class MainActivity extends AppCompatActivity {
 
         auth = FirebaseAuth.getInstance(); // Initialize Firebase Auth
 
-        FirebaseUser user = auth.getCurrentUser();
+        FirebaseUser user = auth.getCurrentUser(); //Control: is there currently user?
         if(user != null){
             Intent intent = new Intent(MainActivity.this,FeedActivity.class);
             startActivity(intent);
             finish();
         }
-
     }
-
     public void signInClicked(View view){
 
         String email = binding.emailText.getText().toString();       //Get the email with viewBinding
