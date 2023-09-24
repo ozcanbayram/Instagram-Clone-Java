@@ -18,7 +18,7 @@ public class UploadActivity extends AppCompatActivity {
     }
 
     public void selectImage(View view){
-        
+
     }
 
 }
