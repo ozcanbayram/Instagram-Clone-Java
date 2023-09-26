@@ -3,20 +3,26 @@ package com.example.javainstagramclone;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
+import com.example.javainstagramclone.adapter.PostAdapter;
+import com.example.javainstagramclone.databinding.ActivityFeedBinding;
 import com.example.javainstagramclone.model.Post;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
@@ -27,11 +33,16 @@ public class FeedActivity extends AppCompatActivity {
     private FirebaseAuth auth;  // Add Firebase  Authentication (name: Auth)
     private FirebaseFirestore firebaseFirestore;
     ArrayList<Post> postArrayList;
+    private ActivityFeedBinding binding;
+    PostAdapter postAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_feed);
+        //setContentView(R.layout.activity_feed);
+        binding = ActivityFeedBinding.inflate(getLayoutInflater());
+        View view = binding.getRoot();
+        setContentView(view);
 
         postArrayList = new ArrayList<>();
 
@@ -39,6 +50,10 @@ public class FeedActivity extends AppCompatActivity {
         firebaseFirestore = FirebaseFirestore.getInstance();
 
         getData();
+
+        binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        postAdapter = new PostAdapter(postArrayList);
+        binding.recyclerView.setAdapter(postAdapter);
     }
 
     private void getData(){
@@ -46,7 +61,9 @@ public class FeedActivity extends AppCompatActivity {
         //DocumentReference documentReference = firebaseFirestore.collection("Posts").document("sadas");
         //CollectionReference collectionReference = firebaseFirestore.collection("Posts").document("adsad");
 
-        firebaseFirestore.collection("Posts").addSnapshotListener(new EventListener<QuerySnapshot>() {
+        // orderBy("Date", Query.Direction.DESCENDING) --> For date filter
+        // if u want to do filter --> use "where..."
+        firebaseFirestore.collection("Posts").orderBy("Date", Query.Direction.DESCENDING).addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
                 if(error!=null){
@@ -65,6 +82,7 @@ public class FeedActivity extends AppCompatActivity {
                         Post post = new Post(userEmail,comment,downloadUrl);
                         postArrayList.add(post);
                     }
+                    postAdapter.notifyDataSetChanged(); //show new data
                 }
 
             }
