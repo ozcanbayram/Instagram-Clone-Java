@@ -11,3 +11,6 @@ Shares: Data via the Firebase database are listed chronologically on the home pa
 Bu uygulamada basit bir Instagram klonu yaptım.
 Uygulamaya kaydolabilir fotoğraf ve yorum paylaşabilir ve diğer paylaşımları görebilirsiniz. 
 Paylaşımlar Firebase veri tabanı üzerinden veriler kronolojik olarak ana sayfada listelenmektedir.
+
+## Languages and Tools:
+![Langs](https://skillicons.dev/icons?i=java,firebase,git,")
