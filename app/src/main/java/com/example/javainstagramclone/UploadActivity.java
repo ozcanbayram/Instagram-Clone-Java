@@ -26,11 +26,15 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.util.HashMap;
 import java.util.UUID;
 
 public class UploadActivity extends AppCompatActivity {
@@ -67,11 +71,43 @@ public class UploadActivity extends AppCompatActivity {
         UUID uuid = UUID.randomUUID();
         String imageName = "image/" + uuid + ".jpg";
 
-        if(imageData != null){
+        if(imageData != null){ // Storage Photo --> Firebase/Storage
             storageReference.child(imageName).putFile(imageData).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                     //Dwnload url.
+                    StorageReference newReferance = firebaseStorage.getReference(imageName); //new reference for get url.
+                    newReferance.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            String downloadUrl = uri.toString();                       // for photos uri.
+                            String comment = binding.commentText.getText().toString(); // for take comment from UI
+                            FirebaseUser user = auth.getCurrentUser();                 // for take users email with FirebaseUser and FireabesaAuth classes.
+                            String email = user.getEmail();                            // for take email
+
+                            HashMap<String,Object> postData = new HashMap<>(); //For key and value matches.
+                            postData.put("userEmail", email);
+                            postData.put("downloadurl", downloadUrl);
+                            postData.put("comment", comment);
+                            postData.put("date", FieldValue.serverTimestamp()); //For date.
+
+                            //Put the Firestore
+                            firebaseFirestore.collection("Posts").add(postData).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                @Override
+                                public void onSuccess(DocumentReference documentReference) {
+                                    //Go to FeedActivity
+                                    Intent intent = new Intent(UploadActivity.this, FeedActivity.class);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                    startActivity(intent);
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Toast.makeText(UploadActivity.this,e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        }
+                    });
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
