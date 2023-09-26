@@ -63,7 +63,7 @@ public class FeedActivity extends AppCompatActivity {
 
         // orderBy("Date", Query.Direction.DESCENDING) --> For date filter
         // if u want to do filter --> use "where..."
-        firebaseFirestore.collection("Posts").orderBy("Date", Query.Direction.DESCENDING).addSnapshotListener(new EventListener<QuerySnapshot>() {
+        firebaseFirestore.collection("Posts").orderBy("date", Query.Direction.DESCENDING).addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
                 if(error!=null){
