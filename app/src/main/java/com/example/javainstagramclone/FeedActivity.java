@@ -11,28 +11,29 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.example.javainstagramclone.model.Post;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.Map;
-import java.util.Objects;
 
 public class FeedActivity extends AppCompatActivity {
 
     private FirebaseAuth auth;  // Add Firebase  Authentication (name: Auth)
     private FirebaseFirestore firebaseFirestore;
+    ArrayList<Post> postArrayList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_feed);
+
+        postArrayList = new ArrayList<>();
 
         auth = FirebaseAuth.getInstance(); //İnitilaze FirebaseAuth
         firebaseFirestore = FirebaseFirestore.getInstance();
@@ -60,7 +61,9 @@ public class FeedActivity extends AppCompatActivity {
                         String userEmail = (String) data.get("userEmail");
                         String comment = (String) data.get("comment");
                         String downloadUrl = (String) data.get("downloadurl");
-                        
+
+                        Post post = new Post(userEmail,comment,downloadUrl);
+                        postArrayList.add(post);
                     }
                 }
 
