@@ -1,22 +1,28 @@
-# Instagram-Clone-java
+<h2>Instagram simple clone with Java and Firebase</h2>
 
-This application is still in the development process. You can review it to support.
+<h4> [EN]</h4>
 
-[EN]
 I made a simple Instagram clone in this app.
 You can register to the application, share photos and comments, and see other posts.
 Shares: Data via the Firebase database are listed chronologically on the home page.
+You can use it by downloading the application from Github.
 
 While doing this application, I understood the logic of basic social media applications.
 I will continue to do projects and practice to learn more.
 
-[TR] 
+<hr>
+
+<h4>[TR]</h4> 
+
 Bu uygulamada basit bir Instagram klonu yaptım.
 Uygulamaya kaydolabilir fotoğraf ve yorum paylaşabilir ve diğer paylaşımları görebilirsiniz. 
 Paylaşımlar Firebase veri tabanı üzerinden veriler kronolojik olarak ana sayfada listelenmektedir.
+Uygulamayı Github'dan indirerek kullanabilirsiniz.
 
 Bu uygulamayı yaparken temel sosyal medya uygulamalarının mantığını anladım. 
 Daha fazlasını öğrenmek için projeler yapmaya ve pratik yapmaya devam edeceğim.
+
+<hr>
 
 ## Languages and Tools:
 ![Langs](https://skillicons.dev/icons?i=java,firebase,git,")
